@@ -182,14 +182,6 @@ char tinyfd_needs[] = "\
 #pragma warning(disable:4706) /* allows usage of strncpy, strcpy, strcat, sprintf, fopen */
 #endif
 
-#ifdef _WIN64
-#include <ShellScalingApi.h>
-
-#pragma comment(linker,"\"/manifestdependency:type='win32' \
-name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
-processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-#endif // _WIN64
-
 static int getenvDISPLAY(void)
 {
 	return tinyfd_assumeGraphicDisplay || getenv("DISPLAY");
@@ -1068,9 +1060,6 @@ int tinyfd_messageBoxW(
         wchar_t const * aIconType, /* "info" "warning" "error" "question" */
         int aDefaultButton) /* 0 for cancel/no , 1 for ok/yes , 2 for no in yesnocancel */
 {
-#ifdef _WIN64 
-	SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
-#endif
         int lBoxReturnValue;
         UINT aCode;
 
@@ -1141,9 +1130,6 @@ int tinyfd_notifyPopupW(
         wchar_t const * aMessage, /* NULL or L"" may contain \n \t */
         wchar_t const * aIconType) /* L"info" L"warning" L"error" */
 {
-#ifdef _WIN64
-        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
         wchar_t * lDialogString;
         size_t lTitleLen;
         size_t lMessageLen;
@@ -1216,9 +1202,6 @@ wchar_t * tinyfd_inputBoxW(
         wchar_t const * aMessage, /* NULL or L"" (\n and \t have no effect) */
         wchar_t const * aDefaultInput) /* L"" , if NULL it's a passwordBox */
 {
-#ifdef _WIN64
-        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
         static wchar_t lBuff[MAX_PATH_OR_CMD];
         wchar_t * lDialogString;
         FILE * lIn;
@@ -1290,7 +1273,6 @@ wchar_t * tinyfd_inputBoxW(
 
                 wcscat(lDialogString, L"tinyfiledialogsTopWindow");
                 wcscat(lDialogString, L"</title>\n\
-<META HTTP-EQUIV=\"MSThemeCompatible\" CONTENT=\"yes\">\n\
 <HTA:APPLICATION\n\
 ID = 'tinyfdHTA'\n\
 APPLICATIONNAME = 'tinyfd_inputBox'\n\
@@ -1497,9 +1479,6 @@ wchar_t * tinyfd_saveFileDialogW(
         wchar_t const * const * aFilterPatterns, /* NULL or {"*.jpg","*.png"} */
         wchar_t const * aSingleFilterDescription) /* NULL or "image files" */
 {
-#ifdef _WIN64
-        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
         static wchar_t lBuff[MAX_PATH_OR_CMD];
         wchar_t lDirname[MAX_PATH_OR_CMD];
         wchar_t lDialogString[MAX_PATH_OR_CMD];
@@ -1603,9 +1582,6 @@ wchar_t * tinyfd_openFileDialogW(
 		wchar_t const * aSingleFilterDescription, /* NULL or "image files" */
         int aAllowMultipleSelects) /* 0 or 1 ; -1 to free allocated memory and return */
 {
-#ifdef _WIN64
-        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
         size_t lLengths[MAX_MULTIPLE_FILES];
         wchar_t lDirname[MAX_PATH_OR_CMD];
         wchar_t lFilterPatterns[MAX_PATH_OR_CMD] = L"";
@@ -1793,9 +1769,6 @@ wchar_t * tinyfd_selectFolderDialogW(
         wchar_t const * aTitle, /* NULL or "" */
         wchar_t const * aDefaultPath) /* NULL or "" */
 {
-#ifdef _WIN64 
-        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
         static wchar_t lBuff[MAX_PATH_OR_CMD];
 		wchar_t * lRetval;
 
@@ -1847,9 +1820,6 @@ wchar_t * tinyfd_colorChooserW(
         unsigned char const aDefaultRGB[3], /* { 0 , 255 , 255 } */
         unsigned char aoResultRGB[3]) /* { 0 , 0 , 0 } */
 {
-#ifdef _WIN64 
-        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
-#endif
         static wchar_t lResultHexRGB[8];
         CHOOSECOLORW cc;
         COLORREF crCustColors[16];
@@ -1916,9 +1886,6 @@ static int messageBoxWinGui(
 	char const * aIconType, /* "info" "warning" "error" "question" */
 	int aDefaultButton) /* 0 for cancel/no , 1 for ok/yes , 2 for no in yesnocancel */
 {
-#ifdef _WIN64 
-	SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
 	int lIntRetVal;
 	wchar_t lTitle[128] = L"";
 	wchar_t * lMessage = NULL;
@@ -1965,9 +1932,6 @@ static int notifyWinGui(
 	char const * aMessage, /* NULL or "" may NOT contain \n nor \t */
 	char const * aIconType)
 {
-#ifdef _WIN64 
-	SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
 	wchar_t lTitle[128] = L"";
 	wchar_t * lMessage = NULL;
 	wchar_t lIconType[16] = L"";
@@ -2007,9 +1971,6 @@ static int inputBoxWinGui(
 	char const * aMessage, /* NULL or "" may NOT contain \n nor \t */
 	char const * aDefaultInput) /* "" , if NULL it's a passwordBox */
 {
-#ifdef _WIN64 
-	SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
 	wchar_t lTitle[128] = L"";
 	wchar_t * lMessage = NULL;
 	wchar_t lDefaultInput[MAX_PATH_OR_CMD] = L"";
@@ -2063,9 +2024,6 @@ static char * saveFileDialogWinGui(
 	char const * const * aFilterPatterns, /* NULL or {"*.jpg","*.png"} */
 	char const * aSingleFilterDescription) /* NULL or "image files" */
 {
-#ifdef _WIN64 
-	SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
 	wchar_t lTitle[128] = L"";
 	wchar_t lDefaultPathAndFile[MAX_PATH_OR_CMD] = L"";
 	wchar_t lSingleFilterDescription[128] = L"";
@@ -2138,9 +2096,6 @@ static char * openFileDialogWinGui(
 	char const * aSingleFilterDescription, /* NULL or "image files" */
 	int aAllowMultipleSelects) /* 0 or 1 */
 {
-#ifdef _WIN64 
-	SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
 	wchar_t lTitle[128] = L"";
 	wchar_t lDefaultPathAndFile[MAX_PATH_OR_CMD] = L"";
 	wchar_t lSingleFilterDescription[128] = L"";
@@ -2206,9 +2161,6 @@ static char * selectFolderDialogWinGui(
 	char const * aTitle, /*  NULL or "" */
 	char const * aDefaultPath) /* NULL or "" */
 {
-#ifdef _WIN64 
-	SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
 	wchar_t lTitle[128] = L"";
 	wchar_t lDefaultPath[MAX_PATH_OR_CMD] = L"";
 	wchar_t * lTmpWChar;
@@ -2250,9 +2202,6 @@ static char * colorChooserWinGui(
         unsigned char const aDefaultRGB[3], /* { 0 , 255 , 255 } */
         unsigned char aoResultRGB[3]) /* { 0 , 0 , 0 } */
 {
-#ifdef _WIN64 
-        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE); 
-#endif
         static char lResultHexRGB[8];
 
         wchar_t lTitle[128];
